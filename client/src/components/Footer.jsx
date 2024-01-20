@@ -1,6 +1,6 @@
 import { Footer } from "flowbite-react";
 import { Link } from "react-router-dom";
-import {BsDribbble, BsFacebook, BsGithub, BsInstagram, BsLinkedin, BsTwitter} from "react-icons/bs"
+import { BsFacebook, BsGithub, BsInstagram, BsLinkedin, BsTwitter} from "react-icons/bs"
 
 function FooterCom() {
   return (
