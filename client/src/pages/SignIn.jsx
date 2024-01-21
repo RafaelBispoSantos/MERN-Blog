@@ -2,21 +2,27 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInsuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
 function SignIn() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setloading] = useState(false);
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if ( !formData.email || !formData.password) {
-      return setErrorMessage("Please fill out all fields");
+    if (!formData.email || !formData.password) {
+      return dispatch(signInFailure("Please fill all the fields"));
     }
     try {
-      setloading(true);
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -24,15 +30,15 @@ function SignIn() {
       });
       const data = await res.json();
       if (data.success === false) {
-        return setErrorMessage(data.message);
+        dispatch(signInFailure(data.message));
       }
-      setloading(false);
-      if(res.ok){
-        navigate('/')
+
+      if (res.ok) {
+        dispatch(signInsuccess(data));
+        navigate("/");
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      setloading(false);
+      dispatch(signInFailure(error.message));
     }
   };
   return (
@@ -55,7 +61,6 @@ function SignIn() {
         {/*rignt*/}
         <div className="flex-1">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            
             <div>
               <Label value="Your email" />
               <TextInput
