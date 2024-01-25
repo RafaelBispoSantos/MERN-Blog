@@ -1,24 +1,31 @@
-import { timeStamp } from 'console';
-import mongoose from 'mongoose';	
+import { timeStamp } from "console";
+import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     username: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
     email: {
-        type: String,
-        requierd: true,
-        unique: true
+      type: String,
+      requierd: true,
+      unique: true,
     },
     password: {
-        type: String,
-        required: true,
-    }
-}, {timestamps: true}
+      type: String,
+      required: true,
+    },
+    profilePicture: {
+      type: String,
+      default:
+        "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-vector-600nw-1725655669.jpg",
+    },
+  },
+  { timestamps: true }
 );
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;
