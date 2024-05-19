@@ -135,9 +135,9 @@ function DashProfile() {
       </div>
     </div>
   );
-  );
+  
 }
 
 export default DashProfile;
 
-export default DashProfile;
+
